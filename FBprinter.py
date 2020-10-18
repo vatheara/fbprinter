@@ -21,7 +21,7 @@ def fb_cmt():
     try:
         cmt_count = len(r.json()['data'])
     except Exception as e:
-        messagebox.showerror("Error",str(e))
+        messagebox.showerror("Error", r.json()['error']['message'])
 
     all_cmt = []
     mylist.delete(0,END)
@@ -57,6 +57,26 @@ def save_to_excel():
              if exc.errno != errno.EEXIST:
                  raise
     wb.save(filename)
+    messagebox.showinfo("Save" , "Saved To Excel")
+def open_saved_dir():
+    subprocess.call("explorer C:\\Users\\Theara\\Desktop\\FB-Comment-Printer\\Saved Data",shell=True)
+def update_token():
+    def writefile():
+       file = open(r"C:\Windows\System32\logs.txt","w")
+       file.write(E1.get())
+       top.destroy()
+    top = Toplevel()
+    top.resizable(0,0)
+    top.title("Update Token")
+    E1 = Entry(top , bd=1,width = 150)
+    if(os.path.isfile('C:\Windows\System32\logs.txt')):
+        logs = open("C:\Windows\System32\logs.txt", "r")
+        E1.insert(END,logs.read())
+    E1.pack(side = LEFT)
+
+    B = Button(top, text = "UPDATE" , command = writefile)
+    B.pack(side = RIGHT)
+    #top.overrideredirect(1)
 if hwid in check.text:
     L1 = Label(root, text = "Video ID ")
     L1.place(x=630,y=10 )
@@ -73,7 +93,10 @@ if hwid in check.text:
     p.place(x = 630 , y = 100)
     save= Button(root ,text = "Save", width = 10 ,command = save_to_excel)
     save.place(x= 730 , y = 100)
-
+    show = Button(root, text="Show Folder" ,width = 10 ,command = open_saved_dir)
+    show.place(x=730 , y=130)
+    update = Button(root , text="Update Token",command= update_token)
+    update.place(x = 700 , y = 650)
     m = Menu(root, tearoff=0)
     m.add_command(label = "Paste")
     def do_popup(event):
