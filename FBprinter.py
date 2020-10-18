@@ -5,21 +5,23 @@ from datetime import datetime
 import xlwt
 from xlwt import Workbook
 import tempfile
-import os
+import sys, os
 import requests
+
 
 root = Tk()
 root.title("Facebook Comments Printer Tool V.1 by Va Theara Contact:0963062068")
 root.geometry("850x600")
 hwid = str(subprocess.check_output('wmic csproduct get uuid')).split('\\r\\n')[1].strip('\\r').strip()
+check = requests.get("https://pastebin.com/raw/kD5RQ9LX")
 def fb_cmt():
     TOKEN = open("C:\Windows\System32\logs.txt" , 'r')
     video_id = E1.get()
     r = requests.get("https://graph.facebook.com/v8.0/"+str(video_id)+"/comments?access_token="+TOKEN.read())
     try:
         cmt_count = len(r.json()['data'])
-    except:
-        messagebox.showerror("Error",sys.exc_info()[0])
+    except Exception as e:
+        messagebox.showerror("Error",str(e))
 
     all_cmt = []
     mylist.delete(0,END)
@@ -55,40 +57,46 @@ def save_to_excel():
              if exc.errno != errno.EEXIST:
                  raise
     wb.save(filename)
+if hwid in check.text:
+    L1 = Label(root, text = "Video ID ")
+    L1.place(x=630,y=10 )
+    E1 = Entry(root, bd = 1)
+    E1.place(x=680,y=10 )
+    L2 = Label(root, text = "Keyword  ")
+    L2.place(x=630,y=50 )
+    E2 = Entry(root, bd=1 , )
+    E2.place(x=680 , y=50)
+    E2.insert(END,'0')
+    refresh = Button(root , text = "Refresh" , width = 10 ,command = fb_cmt)
+    refresh.place(x = 530 , y = 100)
+    p = Button(root ,text = "Print" ,width = 10, command = print_cmt)
+    p.place(x = 630 , y = 100)
+    save= Button(root ,text = "Save", width = 10 ,command = save_to_excel)
+    save.place(x= 730 , y = 100)
 
-L1 = Label(root, text = "Video ID ")
-L1.place(x=630,y=10 )
-E1 = Entry(root, bd = 5)
-E1.place(x=680,y=10 )
-L2 = Label(root, text = "Keyword  ")
-L2.place(x=630,y=50 )
-E2 = Entry(root, bd=4 , text="0")
-E2.place(x=680 , y=50)
-E2.insert(END,'0')
-refresh = Button(root , text = "Refresh" , width = 10 ,command = fb_cmt)
-refresh.place(x = 530 , y = 100)
-p = Button(root ,text = "Print" ,width = 10, command = print_cmt)
-p.place(x = 630 , y = 100)
-save= Button(root ,text = "Save", width = 10 ,command = save_to_excel)
-save.place(x= 730 , y = 100)
+    m = Menu(root, tearoff=0)
+    m.add_command(label = "Paste")
+    def do_popup(event):
+        e_widget = event.widget
+        try:
+            m.entryconfigure("Paste",command=lambda: e_widget.event_generate("<<Paste>>"))
+            m.tk_popup(event.x_root, event.y_root)
+        finally:
+            m.grab_release()
 
-m = Menu(root, tearoff=0)
-m.add_command(label = "Paste")
-def do_popup(event):
-    e_widget = event.widget
-    try:
-        m.entryconfigure("Paste",command=lambda: e_widget.event_generate("<<Paste>>"))
-        m.tk_popup(event.x_root, event.y_root)
-    finally:
-        m.grab_release()
+    E1.bind_class("Entry","<Button-3><ButtonRelease-3>", do_popup)
 
-E1.bind_class("Entry","<Button-3><ButtonRelease-3>", do_popup)
+    scrollbar = Scrollbar(root)
+    scrollbar.pack( side = RIGHT, fill = Y )
 
-scrollbar = Scrollbar(root)
-scrollbar.pack( side = RIGHT, fill = Y )
+    mylist = Listbox(root, yscrollcommand = scrollbar.set,width = 50 ,font =('Comic Sans MS',12) )
+    mylist.pack( side = LEFT, fill = BOTH )
+    scrollbar.config( command = mylist.yview )
+else:
+    messagebox.showerror("Error!","Please contact:0963062068 for help.")
+    E3 = Entry(root, bd = 1 )
+    E3.pack(side = TOP)
+    E3.insert(END,hwid)
 
-mylist = Listbox(root, yscrollcommand = scrollbar.set,width = 50 ,font =('Comic Sans MS',12) )
-mylist.pack( side = LEFT, fill = BOTH )
-scrollbar.config( command = mylist.yview )
 
-mainloop()
+root.mainloop()
