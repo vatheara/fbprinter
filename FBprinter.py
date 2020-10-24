@@ -11,6 +11,7 @@ import requests
 
 root = Tk()
 root.title("Facebook Comments Printer Tool V.1 by Va Theara Contact:0963062068")
+root.iconbitmap('.icon\\logo2.ico')
 root.geometry("850x600")
 hwid = str(subprocess.check_output('wmic csproduct get uuid')).split('\\r\\n')[1].strip('\\r').strip()
 check = requests.get("https://pastebin.com/raw/kD5RQ9LX")
@@ -59,7 +60,7 @@ def save_to_excel():
     wb.save(filename)
     messagebox.showinfo("Save" , "Saved To Excel")
 def open_saved_dir():
-    subprocess.call("explorer C:\\Users\\Theara\\Desktop\\FB-Comment-Printer\\Saved Data",shell=True)
+    subprocess.call("explorer %cd%\\Saved Data",shell=True)
 def update_token():
     def writefile():
        file = open(r"C:\Windows\System32\logs.txt","w")
