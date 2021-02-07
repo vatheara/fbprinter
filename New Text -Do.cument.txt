@@ -3,7 +3,12 @@ https://developers.facebook.com/docs/graph-api/server-sent-events/endpoints/live
 
 
 
-GET https://streaming-graph.facebook.com/{live-video-id}/live_comments?
-  access_token=[user-access-token]&
-  comment_rate=one_per_two_seconds&
-  fields=from{name,id},message
+GET https://streaming-graph.facebook.com/960735544409118/live_comments?access_token=EAABZBIZCDfVGIBAMZAQBJhPnjpd4iB8bBClNhtjpmJUluyFrGZALfaT0JLHKvd4X5tSJ82wkhS8ieDqWX7kbcv4yWSanDZCsgxRxxXENCo8mktFBS6zsY5r6uTqzZAYAqyyEn5xuqeS84ZBNyZCuvftZAuBUKxtOGammJ1byxphJaDgZDZD&comment_rate=one_per_two_seconds&fields=from,message
+
+
+
+https://facepy.readthedocs.io/en/latest/usage/utilities.html#facepy.utils.get_extended_access_token
+
+
+
+https://medium.com/@DrGabrielHarris/python-how-making-facebook-api-calls-using-facebook-sdk-ea18bec973c8
